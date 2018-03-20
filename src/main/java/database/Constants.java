@@ -61,6 +61,22 @@ public class Constants {
                                                             TRANSFER_MONEY, CREATE_REPORT};
     }
 
+    public static class AccountTypes{
+        public static final String DEBIT = "debit";
+        public static final String CREDIT ="credit";
+    }
+
+    public static class TransactionType{
+        public static final String ACCOUNTS_TRANSFER = "accounts transfer";
+        public static final String PAYING_BILL = "paying bill";
+        public static final String CLIENT_CREATION = "client creation";
+        public static final String CLIENT_UPDATE = "client update";
+        public static final String CLIENT_REMOVAL = "client removal";
+        public static final String ACCOUNT_CREATION = "account creation";
+        public static final String ACCOUNT_UPDATE = "account update";
+        public static final String ACCOUNT_REMOVAL = "account removal";
+    }
+
     public static Map<String, List<String>> getRolesRights() {
         Map<String, List<String>> ROLES_RIGHTS = new HashMap<>();
         for (String role : ROLES) {
