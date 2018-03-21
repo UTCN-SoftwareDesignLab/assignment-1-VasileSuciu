@@ -4,8 +4,6 @@ import model.Account;
 import model.Client;
 import model.builder.AccountBuilder;
 
-import javax.xml.transform.Result;
-import java.lang.reflect.Executable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
