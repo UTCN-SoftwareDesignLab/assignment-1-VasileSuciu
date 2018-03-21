@@ -32,8 +32,8 @@ public class ClientBuilder {
         return this;
     }
 
-    public ClientBuilder setAccounts(List<Account> accounts){
-        client.setAccounts(accounts);
+    public ClientBuilder setId(Long id){
+        client.setId(id);
         return this;
     }
 

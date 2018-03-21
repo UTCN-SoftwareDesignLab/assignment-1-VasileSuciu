@@ -1,11 +1,17 @@
 package database;
 
+import model.Role;
+import model.User;
+import model.builder.UserBuilder;
 import repository.security.RightsRolesRepository;
 import repository.security.RightsRolesRepositoryMySQL;
+import repository.user.UserRepository;
+import repository.user.UserRepositoryMySQL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +23,7 @@ import static database.Constants.getRolesRights;
 
 public class Bootstrap {
     private static RightsRolesRepository rightsRolesRepository;
+    private static UserRepository userRepository;
 
     public static void main(String[] args) throws SQLException {
         dropAll();
@@ -24,6 +31,7 @@ public class Bootstrap {
         bootstrapTables();
 
         bootstrapUserData();
+
     }
 
     private static void dropAll() throws SQLException {
@@ -34,13 +42,23 @@ public class Bootstrap {
             Statement statement = connection.createStatement();
 
             String[] dropStatements = {
-                    "TRUNCATE `role_right`;",
-                    "DROP TABLE `role_right`;",
-                    "TRUNCATE `right`;",
-                    "TRUNCATE `user_role`;",
-                    "DROP TABLE `user_role`;",
-                    "TRUNCATE `role`;",
-                    "DROP TABLE  `book`, `role`, `user`;"
+                    "TRUNCATE `role_right`",
+                    "DROP TABLE `role_right`",
+                    "TRUNCATE `rights`",
+                    "TRUNCATE `user_role`",
+                    "DROP TABLE `user_role`",
+                    "TRUNCATE `role`",
+                    "DROP TABLE role",
+                    "TRUNCATE `transaction`",
+                    "DROP TABLE transaction",
+                    "TRUNCATE `bill`",
+                    "DROP TABLE `bill`",
+                    "TRUNCATE `account`",
+                    "DROP TABLE `account`",
+                    "TRUNCATE `client`",
+                    "DROP TABLE `rights`",
+                    "DROP TABLE  `client`, `user`;"
+
             };
 
             Arrays.stream(dropStatements).forEach(dropStatement -> {
@@ -82,11 +100,17 @@ public class Bootstrap {
 
             JDBConnectionWrapper connectionWrapper = new JDBConnectionWrapper(schema);
             rightsRolesRepository = new RightsRolesRepositoryMySQL(connectionWrapper.getConnection());
+            userRepository = new UserRepositoryMySQL(connectionWrapper.getConnection(), rightsRolesRepository);
 
             bootstrapRoles();
             bootstrapRights();
             bootstrapRoleRight();
             bootstrapUserRoles();
+
+            List<Role> role = new ArrayList<Role>();
+            role.add(rightsRolesRepository.findRoleById(1L));
+            User user = new UserBuilder().setUsername("name").setPassword("Pass").setRoles(role).build();
+            userRepository.save(user);
         }
     }
 

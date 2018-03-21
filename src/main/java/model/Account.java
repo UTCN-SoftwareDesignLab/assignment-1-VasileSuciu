@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 
 public class Account {
@@ -12,7 +12,7 @@ public class Account {
     private Client client;
 
     public Account(){
-        this.creationDate = new Date();
+        this.creationDate = new Date(System.currentTimeMillis());
     }
 
     public Long getId() { return id; }

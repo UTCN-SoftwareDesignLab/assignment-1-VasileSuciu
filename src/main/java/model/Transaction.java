@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Transaction{
 
@@ -10,7 +10,7 @@ public class Transaction{
     private User user;
 
     public Transaction(){
-        this.date = new Date();
+        this.date = new Date(System.currentTimeMillis());
     }
 
     public void setId(Long id) { this.id = id; }

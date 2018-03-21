@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AccountRepository {
 
-    void addAccount(Account account);
+    boolean addAccount(Account account);
 
     boolean removeAccount(Account account);
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TransactionRepository {
 
-    void addTransaction(Transaction transaction);
+    boolean addTransaction(Transaction transaction);
 
     List<Transaction> getAllTransaction();
 

@@ -26,8 +26,8 @@ public class Constants {
         public static final String ACCOUNT = "account";
         public static final String BILL = "bill";
 
-        public static final String[] ORDERED_TABLES_FOR_CREATION = new String[]{USER, ROLE, RIGHTS, ROLE_RIGHT, USER_ROLE, TRANSACTION,
-                                                                    CLIENT, ACCOUNT, BILL};
+        public static final String[] ORDERED_TABLES_FOR_CREATION = new String[]{USER, ROLE, RIGHTS, TRANSACTION,
+                                                                    CLIENT, ACCOUNT, BILL, ROLE_RIGHT, USER_ROLE};
     }
 
     public static class Roles {

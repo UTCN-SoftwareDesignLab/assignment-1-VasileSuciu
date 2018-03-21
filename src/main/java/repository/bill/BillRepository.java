@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BillRepository {
 
-    void addBill(Bill bill);
+    boolean addBill(Bill bill);
 
     List<Bill> getAllBills();
 

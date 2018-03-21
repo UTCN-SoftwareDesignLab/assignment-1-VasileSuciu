@@ -3,6 +3,8 @@ package model.builder;
 import model.Transaction;
 import model.User;
 
+import java.sql.Date;
+
 public class TransactionBuilder {
     public Transaction transaction;
 
@@ -17,6 +19,16 @@ public class TransactionBuilder {
 
     public TransactionBuilder setUser(User user){
         transaction.setUser(user);
+        return this;
+    }
+
+    public TransactionBuilder setDate(Date date){
+        transaction.setDate(date);
+        return this;
+    }
+
+    public TransactionBuilder setId(Long id){
+        transaction.setId(id);
         return this;
     }
 

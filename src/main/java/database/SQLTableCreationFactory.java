@@ -26,36 +26,36 @@ public class SQLTableCreationFactory {
                     "PRIMARY KEY (right_id));";
 
             case USER_ROLE:
-                return "CREATE TABLE IF NOT EXISTS user_role ("+
-                    "user_id INT NOT NULL,"+
-                    "role_id INT NOT NULL,"+
-                    "PRIMARY KEY (user_id, role_id),"+
-                    "CONSTRAINT user_user_role_fk"+
-                    "FOREIGN KEY (user_id)"+
-                    "REFERENCES user (user_id)"+
-                    "ON DELETE NO ACTION"+
-                    "ON UPDATE NO ACTION,"+
-                    "CONSTRAINT role_user_role_fk"+
-                    "FOREIGN KEY (role_id)"+
-                    "REFERENCES role (role_id)"+
-                    "ON DELETE NO ACTION"+
-                    "ON UPDATE NO ACTION);";
+                return "CREATE TABLE IF NOT EXISTS user_role ( "+
+                    "user_id INT NOT NULL, "+
+                    "role_id INT NOT NULL, "+
+                    "PRIMARY KEY (user_id, role_id), "+
+                    "CONSTRAINT user_user_role_fk "+
+                    "FOREIGN KEY (user_id) "+
+                    "REFERENCES user (user_id) "+
+                    "ON DELETE NO ACTION "+
+                    "ON UPDATE NO ACTION, "+
+                    "CONSTRAINT role_user_role_fk "+
+                    "FOREIGN KEY (role_id) "+
+                    "REFERENCES role (role_id) "+
+                    "ON DELETE NO ACTION "+
+                    "ON UPDATE NO ACTION); ";
 
             case ROLE_RIGHT:
-                return "CREATE TABLE IF NOT EXISTS role_right ("+
-                    "right_id INT NOT NULL,"+
-                    "role_id INT NOT NULL,"+
-                    "PRIMARY KEY (right_id, role_id),"+
-                    "CONSTRAINT role_role_right_fk"+
-                    "FOREIGN KEY (role_id)"+
-                    "REFERENCES role (role_id)"+
-                    "ON DELETE NO ACTION"+
-                    "ON UPDATE NO ACTION,"+
-                    "constraint right_role_right_fk"+
-                    "FOREIGN KEY (right_id)"+
-                    "REFERENCES rights (right_id)"+
-                    "ON DELETE NO ACTION"+
-                    "ON UPDATE NO ACTION);";
+                return "CREATE TABLE IF NOT EXISTS role_right ( "+
+                    "right_id INT NOT NULL, "+
+                    "role_id INT NOT NULL, "+
+                    "PRIMARY KEY (right_id, role_id), "+
+                    "CONSTRAINT role_role_right_fk "+
+                    "FOREIGN KEY (role_id) "+
+                    "REFERENCES role (role_id) "+
+                    "ON DELETE NO ACTION "+
+                    "ON UPDATE NO ACTION, "+
+                    "constraint right_role_right_fk "+
+                    "FOREIGN KEY (right_id) "+
+                    "REFERENCES rights (right_id) "+
+                    "ON DELETE NO ACTION "+
+                    "ON UPDATE NO ACTION); ";
 
             case TRANSACTION:
                 return "CREATE TABLE IF NOT EXISTS transaction (" +
@@ -63,12 +63,12 @@ public class SQLTableCreationFactory {
                     "type VARCHAR(100) NOT NULL," +
                     "date DATE NOT NULL," +
                     "user_id INT NOT NULL," +
-                    "PRIMARY KEY (transaction_id),"+
-                    "CONSTRAINT user_transaction_fk"+
-                    "FOREIGN KEY (user_id)"+
-                    "REFERENCES user (user_id)"+
-                    "ON DELETE NO ACTION"+
-                    "ON UPDATE NO ACTION);";
+                    "PRIMARY KEY (transaction_id), "+
+                    "CONSTRAINT user_transaction_fk "+
+                        "FOREIGN KEY (user_id) "+
+                    "REFERENCES user (user_id) "+
+                    "ON DELETE NO ACTION "+
+                    "ON UPDATE NO ACTION); ";
 
             case CLIENT:
                 return "CREATE TABLE IF NOT EXISTS client ("+
@@ -80,32 +80,32 @@ public class SQLTableCreationFactory {
                     "PRIMARY KEY (client_id));";
 
             case ACCOUNT:
-                return "CREATE TABLE IF NOT EXISTS account (" +
-                    "account_id INT AUTO_INCREMENT NOT NULL,1" +
-                    "type VARCHAR(100) NOT NULL," +
-                    "creation_date DATE NOT NULL," +
-                    "balance DOUBLE  NOT NULL," +
-                    "client_id INT NOT NULL," +
-                    "PRIMARY KEY (account_id)," +
-                    "CONSTRAINT client_fk" +
-                    "FOREIGN KEY (client_id)" +
-                    "REFERENCES client (client_id)" +
-                    "ON DELETE NO ACTION" +
-                    "ON UPDATE NO ACTION);";
+                return "CREATE TABLE IF NOT EXISTS account ( " +
+                    "account_id INT AUTO_INCREMENT NOT NULL, " +
+                    "type VARCHAR(100) NOT NULL, " +
+                    "creation_date DATE NOT NULL, " +
+                    "balance DOUBLE  NOT NULL, " +
+                    "client_id INT NOT NULL, " +
+                    "PRIMARY KEY (account_id), " +
+                    "CONSTRAINT client_fk " +
+                    "FOREIGN KEY (client_id) " +
+                    "REFERENCES client (client_id) " +
+                    "ON DELETE CASCADE " +
+                    "ON UPDATE CASCADE ); ";
 
 
             case BILL:
-                return "CREATE TABLE IF NOT EXISTS bill ("+
-                        "bill_id INT AUTO_INCREMENT NOT NULL,"+
-                        "total DOUBLE  NOT NULL,"+
-                        "company VARCHAR(255) NOT NULL,"+
-                        "user_id INT NOT NULL,"+
-                        "PRIMARY KEY (bill_id),"+
-                        "CONSTRAINT user_bill_fk"+
-                        "FOREIGN KEY (user_id)"+
-                        "REFERENCES user (user_id)"+
-                        "ON DELETE NO ACTION"+
-                        "ON UPDATE NO ACTION);";
+                return "CREATE TABLE IF NOT EXISTS bill ( "+
+                        "bill_id INT AUTO_INCREMENT NOT NULL, "+
+                        "total DOUBLE  NOT NULL, "+
+                        "company VARCHAR(255) NOT NULL, "+
+                        "user_id INT NOT NULL, "+
+                        "PRIMARY KEY (bill_id), "+
+                        "CONSTRAINT user_bill_fk "+
+                        "FOREIGN KEY (user_id) "+
+                        "REFERENCES user (user_id) "+
+                        "ON DELETE NO ACTION "+
+                        "ON UPDATE NO ACTION); ";
 
             default:
                 return " ";
