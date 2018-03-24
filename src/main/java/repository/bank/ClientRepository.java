@@ -16,5 +16,5 @@ public interface ClientRepository {
 
     Client getClientById(Long id);
 
-    List<Client> getClientsByName(String name);
+    Client getClientByName(String name);
 }

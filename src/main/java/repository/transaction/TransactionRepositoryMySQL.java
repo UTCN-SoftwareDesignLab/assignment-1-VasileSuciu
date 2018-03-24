@@ -98,6 +98,18 @@ public class TransactionRepositoryMySQL implements TransactionRepository {
         return null;
     }
 
+    @Override
+    public void removeAllTransactions() {
+        try{
+            PreparedStatement deleteAll = connection.prepareStatement("" +
+                    "DELETE FROM transaction WHERE id>=0");
+            deleteAll.executeUpdate();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private Transaction getTransactionFromResultSet(ResultSet rs) throws SQLException{
         Transaction transaction = new TransactionBuilder()
                 .setId(rs.getLong("transaction_id"))

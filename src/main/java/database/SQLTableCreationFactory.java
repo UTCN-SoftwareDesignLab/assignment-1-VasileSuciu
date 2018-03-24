@@ -77,7 +77,8 @@ public class SQLTableCreationFactory {
                     "personal_num_code VARCHAR(20) NOT NULL,"+
                     "address VARCHAR(255) NOT NULL,"+
                     "name VARCHAR(255) NOT NULL,"+
-                    "PRIMARY KEY (client_id));";
+                    "PRIMARY KEY (client_id), " +
+                        "UNIQUE (name));";
 
             case ACCOUNT:
                 return "CREATE TABLE IF NOT EXISTS account ( " +

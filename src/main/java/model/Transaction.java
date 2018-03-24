@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class Transaction{
 
@@ -28,4 +29,10 @@ public class Transaction{
     public Date getDate() { return date; }
 
     public User getUser() { return user; }
+
+    public String toString(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        return "Transaction type: " + type + " in " +
+                sdf.format(date) + " by user " + user.getUsername();
+    }
 }

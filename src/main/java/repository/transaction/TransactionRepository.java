@@ -14,4 +14,6 @@ public interface TransactionRepository {
     List<Transaction> findTransactionByUser(User user);
 
     Transaction findTransactionById(Long id);
+
+    void removeAllTransactions();
 }

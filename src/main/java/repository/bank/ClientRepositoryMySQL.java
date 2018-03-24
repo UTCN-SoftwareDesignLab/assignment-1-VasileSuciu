@@ -110,21 +110,23 @@ public class ClientRepositoryMySQL implements ClientRepository {
     }
 
     @Override
-    public List<Client> getClientsByName(String name) {
-        List<Client> clients = new ArrayList<Client>();
+    public Client getClientByName(String name) {
         try{
             PreparedStatement getClient = connection.prepareStatement(
                     "SELECT  * FROM client WHERE name = ?");
             getClient.setString(1,name);
             ResultSet rs = getClient.executeQuery();
-            while (rs.next()){
-                clients.add(getClientFromResultSet(rs));
+            if (rs.next()){
+                return getClientFromResultSet(rs);
+            }
+            else{
+                return null;
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        return clients;
+        return null;
     }
 
     private Client getClientFromResultSet(ResultSet rs) throws SQLException {

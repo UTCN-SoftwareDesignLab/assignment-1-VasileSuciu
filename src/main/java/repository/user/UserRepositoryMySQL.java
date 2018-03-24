@@ -69,7 +69,7 @@ public class UserRepositoryMySQL implements UserRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new AuthenticationException();
+            throw new AuthenticationException("Server communication error");
         }
     }
 
@@ -99,26 +99,28 @@ public class UserRepositoryMySQL implements UserRepository {
     }
 
     @Override
-    public List<User> findByUsername(String username) {
-        List<User> users = new ArrayList<User>();
+    public User findByUsername(String username) {
         try {
             PreparedStatement selectUserStatement = connection.
                     prepareStatement("SELECT * FROM user WHERE username = ?");
             selectUserStatement.setString(1,username);
             ResultSet userResultSet = selectUserStatement.executeQuery();
-            while (userResultSet.next()) {
+            if (userResultSet.next()) {
                 User user = new UserBuilder()
                         .setPassword(userResultSet.getString("username"))
                         .setPassword(userResultSet.getString("password"))
                         .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("user_id")))
                         .build();
-                users.add(user);
+                return user;
+            }
+            else {
+                return null;
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        return users;
+        return null;
     }
 
     @Override

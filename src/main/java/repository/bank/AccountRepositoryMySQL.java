@@ -11,11 +11,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountRepositorMySQL implements  AccountRepository{
+public class AccountRepositoryMySQL implements  AccountRepository{
     private Connection connection;
     private ClientRepository clientRepository;
 
-    public AccountRepositorMySQL(Connection connection, ClientRepository clientRepository){
+    public AccountRepositoryMySQL(Connection connection, ClientRepository clientRepository){
         this.connection = connection;
         this.clientRepository = clientRepository;
     }
