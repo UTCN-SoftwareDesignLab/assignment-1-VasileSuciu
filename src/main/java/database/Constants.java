@@ -64,6 +64,8 @@ public class Constants {
     public static class AccountTypes{
         public static final String DEBIT = "debit";
         public static final String CREDIT ="credit";
+
+        public static final String[] TYPES = new String[]{CREDIT, DEBIT};
     }
 
     public static class TransactionType{

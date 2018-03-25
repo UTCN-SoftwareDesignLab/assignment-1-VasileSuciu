@@ -24,6 +24,6 @@ public interface UserRepository {
 
     void removeAll();
 
-    void removeUser(User user);
+    boolean removeUser(User user);
 
 }

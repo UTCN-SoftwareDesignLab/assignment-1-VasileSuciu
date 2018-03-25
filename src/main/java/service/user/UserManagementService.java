@@ -9,7 +9,7 @@ public interface UserManagementService {
 
     Notification<Boolean> updateUser(User user, Boolean passwordChanged);
 
-    void deleteUser(String user);
+    boolean deleteUser(String user);
 
     List<User> getAllUsers();
 }

@@ -185,13 +185,15 @@ public class UserRepositoryMySQL implements UserRepository {
     }
 
     @Override
-    public void removeUser(User user){
+    public boolean removeUser(User user){
         try {
             Statement statement = connection.createStatement();
             String sql = "DELETE from user WHERE user_id = "+user.getId();
             statement.executeUpdate(sql);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

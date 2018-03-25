@@ -41,7 +41,6 @@ public class ClientManagementServiceMySQL implements ClientManagementService{
     @Override
     public Notification<Boolean> updateClient(String name, String address, String pnc, String idCard) {
         Client client = clientRepository.getClientByName(name);
-        client.setName(name);
         client.setAddress(address);
         client.setPersonalNumericalCode(pnc);
         client.setIdCardNumber(idCard);

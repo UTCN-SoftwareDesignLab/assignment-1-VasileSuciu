@@ -3,6 +3,7 @@ package views;
 import javax.swing.JPanel;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -64,24 +65,23 @@ public class EmployeePanel extends JPanel {
 	}
 
 	
-	
+	public void setAccountID(Long id){accountID.setText(String.valueOf(id));}
 	public Long getAccountFromComboBox() {
 		return (Long)accountFromComboBox.getSelectedItem();
 	}
 	
-	public void setBtnUpdateAccountActionListener(ActionListener action) {
+	public void setBtnUpdateAccount(ActionListener action) {
 		btnUpdateAccount.addActionListener(action);
 	}
 	
-	public String getCompany() {
-		return companyTextField.getText();
-	}
-	public String getClinetFromComboBox() {
+	public String getCompany() { return companyTextField.getText(); }
+	public String getClientFromComboBox() {
 		return (String)clientFromComboBox.getSelectedItem();
 	}
 	public String getCreationDate() {
 		return creationDate.getText();
 	}
+	public void setCreationDate(String date){ creationDate.setText(date);}
 	public String getClientToComboBox() {
 		return (String)clientToComboBox.getSelectedItem();
 	}
@@ -92,10 +92,12 @@ public class EmployeePanel extends JPanel {
 	public String getNameField() {
 		return name.getText();
 	}
+	public void setNameField(String clientName){ name.setText(clientName);}
 	
 	public String getBalance() {
 		return balance.getText();
 	}
+	public void setBalance(String balance1) {balance.setText(balance1);}
 	
 	public void setBtnUpdateClient(ActionListener action) {
 		btnUpdateClient.addActionListener(action);
@@ -104,7 +106,8 @@ public class EmployeePanel extends JPanel {
 	public String getPersonalNumericalCode() {
 		return personalNumericalCode.getText();
 	}
-	
+	public void setPersonalNumericalCode(String pnc) {personalNumericalCode.setText(pnc);}
+
 	public void setBtnTransfer(ActionListener action) {
 		btnTransfer.addActionListener(action);
 	}
@@ -118,6 +121,7 @@ public class EmployeePanel extends JPanel {
 	public String getAddress() {
 		return address.getText();
 	}
+	public void setAddress(String addrs){address.setText(addrs);}
 	
 	public void setBtnSwitchView(ActionListener action) {
 		btnSwitchView.addActionListener(action);
@@ -134,6 +138,7 @@ public class EmployeePanel extends JPanel {
 	public String getIdCardNumber() {
 		return idCardNumber.getText();
 	}
+	public void setIdCardNumber(String id){idCardNumber.setText(id);}
 	public void setBtnRemoveAccount(ActionListener action) {
 		btnRemoveAccount.addActionListener(action);
 	}
@@ -170,6 +175,44 @@ public class EmployeePanel extends JPanel {
 	}
 	public void setAccountTypeComboBox(List<String> types){
 		types.forEach(accountType::addItem);
+	}
+	public void setAccountFromSelectedIndex(int index){
+		accountFromComboBox.setSelectedIndex(index);
+	}
+	public void setAccountToSelectedIndex(int index){
+		if (index < accountToComboBox.getItemCount()) {
+			accountToComboBox.setSelectedIndex(index);
+		}
+	}
+	public void setClientFromSelectedIndex(int index){
+		if (index < clientFromComboBox.getItemCount()) {
+			clientFromComboBox.setSelectedIndex(index);
+		}
+	}
+	public void setClientToSelectedIndex(int index){
+		if (index < clientToComboBox.getItemCount()) {
+			clientToComboBox.setSelectedIndex(index);
+		}
+	}
+	public void setAccountTypeSelectedIndex(int index){
+		if (index < accountType.getItemCount()) {
+			accountType.setSelectedIndex(index);
+		}
+	}
+	public void setAccountFromItemListener(ItemListener listener){
+		accountFromComboBox.addItemListener(listener);
+	}
+	public void setAccountToItemListener(ItemListener listener){
+		accountToComboBox.addItemListener(listener);
+	}
+	public void setClientFromItemListener(ItemListener listener){
+		clientFromComboBox.addItemListener(listener);
+	}
+	public void setClientToItemListener(ItemListener listener){
+		clientToComboBox.addItemListener(listener);
+	}
+	public void setAccountTypeItemListener(ItemListener listener){
+		accountType.addItemListener(listener);
 	}
 	
 	private void initialize() {
