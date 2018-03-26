@@ -171,6 +171,7 @@ public class EmployeePanel extends JPanel {
 		clients.forEach(clientFromComboBox::addItem);
 	}
 	public void setClientToComboBox(List<String> clients){
+
 		clients.forEach(clientToComboBox::addItem);
 	}
 	public void setAccountTypeComboBox(List<String> types){

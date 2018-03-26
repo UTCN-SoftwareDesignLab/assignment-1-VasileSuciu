@@ -38,6 +38,11 @@ public class UserManagementServiceMySQL implements UserManagementService {
     }
 
     @Override
+    public User getUser(String user) {
+        return userRepository.findByUsername(user);
+    }
+
+    @Override
     public boolean deleteUser(String user) {
         return userRepository.removeUser(userRepository.findByUsername(user));
     }

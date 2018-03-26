@@ -64,7 +64,7 @@ public class UserRepositoryMySQL implements UserRepository {
                 findByUsernameAndPasswordNotification.setResult(user);
                 return findByUsernameAndPasswordNotification;
             } else {
-                findByUsernameAndPasswordNotification.addError("Invalid email or password!");
+                findByUsernameAndPasswordNotification.addError("Invalid username or password!");
                 return findByUsernameAndPasswordNotification;
             }
         } catch (SQLException e) {

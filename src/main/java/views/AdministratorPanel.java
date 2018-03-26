@@ -8,6 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
@@ -90,7 +91,22 @@ public class AdministratorPanel extends JPanel {
 		btnUpdateUser.addActionListener(action);
 	}
 	public void setBtnLogOut(ActionListener action) {
-		btnLogOut.addActionListener(action);;
+		btnLogOut.addActionListener(action);
+	}
+	public void setUsersComboBoxSelectedIndex(int index){
+		if (index < userComboBox.getItemCount()){
+			userComboBox.setSelectedIndex(index);
+		}
+	}
+
+	public void setRoleComboBoxSelectedIndex(int index){
+		if (index< roleComboBox.getItemCount()){
+			roleComboBox.setSelectedIndex(index);
+		}
+	}
+
+	public void setUserComboBoxItemListener(ItemListener listener){
+		userComboBox.addItemListener(listener);
 	}
 	public String getRoleComboBoxSelectedItem() {
 		return (String)roleComboBox.getSelectedItem();

@@ -4,7 +4,6 @@ import database.Constants;
 import model.Account;
 import model.Client;
 import model.User;
-import model.builder.UserBuilder;
 import model.validation.Notification;
 import repository.user.AuthenticationException;
 import service.bank.AccountManagementService;
@@ -25,9 +24,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class Controller {
@@ -85,6 +82,13 @@ public class Controller {
         employeePanel.setAccountFromItemListener(new AccountFromItemListener());
         employeePanel.setClientFromItemListener(new ClientFromItemListener());
         employeePanel.setClientToItemListener(new ClientToItemListener());
+        administratorPanel.setBtnRegisterUser(new RegisterUser());
+        administratorPanel.setBtnUpdateUser(new UpdateUser());
+        administratorPanel.setBtnRemoveUser(new RemoveUser());
+        administratorPanel.setBtnGenerateReport(new GenerateReport());
+        administratorPanel.setBtnAddRole(new AddRole());
+        administratorPanel.setBtnRemoveRole(new RemoveRole());
+        administratorPanel.setUserComboBoxItemListener(new UsersComboBoxItemListener());
 
     }
 
@@ -123,10 +127,12 @@ public class Controller {
                     employeePanel.setAccountTypeSelectedIndex(0);
                     employeePanel.setAccountFromSelectedIndex(0);
                     employeePanel.setAccountToSelectedIndex(0);
-                    if (user.getRoles().contains(Constants.Roles.ADMINISTRATOR)){
+                    if (user.getRoles().stream().map(s->s.getRole()).collect(Collectors.toList()).contains(Constants.Roles.ADMINISTRATOR)){
                         administratorPanel.setRoleComboBox(Arrays.asList(Constants.Roles.ROLES));
                         administratorPanel.setUserComboBox(userManagementService.getAllUsers().stream().map(s->s.getUsername()).collect(Collectors.toList()));
                         administratorPanel.enableSwichView(true);
+                        administratorPanel.setRoleComboBoxSelectedIndex(0);
+                        administratorPanel.setUsersComboBoxSelectedIndex(0);
                         employeePanel.setBtnSwitchViewEnable(true);
                         mainFrame.changeContent(administratorPanel);
                         currentView = 0;
@@ -346,6 +352,7 @@ public class Controller {
         }
     }
 
+    //to be implemented
     private class UpdateUser implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -378,4 +385,38 @@ public class Controller {
         }
     }
 
+    //to be implemented
+    private class GenerateReport implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    //to be implemented
+    private  class AddRole implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class RemoveRole implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    //to be implemented
+    private class UsersComboBoxItemListener implements ItemListener{
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            User newUser = userManagementService.getUser(administratorPanel.getUserComboBoxSelectedItem());
+            administratorPanel.setUserText(newUser.getUsername());
+            administratorPanel.setPasswordText(newUser.getPassword());
+            administratorPanel.setRolesTextArea(newUser.getRoles().stream()
+                .map(s->s.getRole()).reduce(" ", String::concat));
+        }
+    }
 }

@@ -26,7 +26,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void changeContent(JPanel panel){
-		this.setBounds(panel.getBounds());
+		this.setBounds(10,20,500, 500);
 		this.setContentPane(panel);
 	}
 

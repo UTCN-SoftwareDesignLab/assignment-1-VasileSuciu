@@ -99,8 +99,8 @@ public class RightsRolesRepositoryMySQL implements  RightsRolesRepository{
             for (Role role : roles) {
                 PreparedStatement insertUserRoleStatement = connection
                         .prepareStatement("INSERT INTO `user_role`(user_id, role_id) values (?, ?)");
-                insertUserRoleStatement.setLong(0, user.getId());
-                insertUserRoleStatement.setLong(1, role.getId());
+                insertUserRoleStatement.setLong(1, user.getId());
+                insertUserRoleStatement.setLong(2, role.getId());
                 insertUserRoleStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -131,8 +131,8 @@ public class RightsRolesRepositoryMySQL implements  RightsRolesRepository{
         try {
             PreparedStatement insertStatement = connection
                     .prepareStatement("INSERT IGNORE INTO " + ROLE_RIGHT + "(role_id, right_id) values (?, ?)");
-            insertStatement.setLong(0, roleId);
-            insertStatement.setLong(1, rightId);
+            insertStatement.setLong(1, roleId);
+            insertStatement.setLong(2, rightId);
             insertStatement.executeUpdate();
         } catch (SQLException e) {
 

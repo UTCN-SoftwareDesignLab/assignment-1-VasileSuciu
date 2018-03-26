@@ -12,4 +12,6 @@ public interface UserManagementService {
     boolean deleteUser(String user);
 
     List<User> getAllUsers();
+
+    User getUser(String user);
 }

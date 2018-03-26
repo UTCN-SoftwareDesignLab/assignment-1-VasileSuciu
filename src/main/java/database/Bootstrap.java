@@ -3,12 +3,24 @@ package database;
 import model.Role;
 import model.User;
 import model.builder.UserBuilder;
+import model.validation.Notification;
+import repository.bank.AccountRepository;
+import repository.bank.AccountRepositoryMySQL;
+import repository.bank.ClientRepository;
+import repository.bank.ClientRepositoryMySQL;
 import repository.security.RightsRolesRepository;
 import repository.security.RightsRolesRepositoryMySQL;
 import repository.user.UserRepository;
 import repository.user.UserRepositoryMySQL;
+import service.bank.AccountManagementService;
+import service.bank.AccountManagementServiceMySQL;
+import service.bank.ClientManagementService;
+import service.bank.ClientManagementServiceMySQL;
+import service.user.AuthenticationService;
+import service.user.AuthenticationServiceMySQL;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -24,6 +36,8 @@ import static database.Constants.getRolesRights;
 public class Bootstrap {
     private static RightsRolesRepository rightsRolesRepository;
     private static UserRepository userRepository;
+    private static ClientRepository clientRepository;
+    private static AccountRepository accountRepository;
 
     public static void main(String[] args) throws SQLException {
         dropAll();
@@ -31,6 +45,9 @@ public class Bootstrap {
         bootstrapTables();
 
         bootstrapUserData();
+
+        bootstrapSampleData();
+
 
     }
 
@@ -105,12 +122,7 @@ public class Bootstrap {
             bootstrapRoles();
             bootstrapRights();
             bootstrapRoleRight();
-            bootstrapUserRoles();
-
-            List<Role> role = new ArrayList<Role>();
-            role.add(rightsRolesRepository.findRoleById(1L));
-            User user = new UserBuilder().setUsername("name").setPassword("Pass").setRoles(role).build();
-            userRepository.save(user);
+            //bootstrapUserRoles();
         }
     }
 
@@ -142,6 +154,55 @@ public class Bootstrap {
 
     private static void bootstrapUserRoles() throws SQLException {
 
+    }
+
+    private static void bootstrapSampleData(){
+        for (String schema : SCHEMAS) {
+
+            JDBConnectionWrapper connectionWrapper = new JDBConnectionWrapper(schema);
+            rightsRolesRepository = new RightsRolesRepositoryMySQL(connectionWrapper.getConnection());
+            userRepository = new UserRepositoryMySQL(connectionWrapper.getConnection(), rightsRolesRepository);
+            clientRepository = new ClientRepositoryMySQL(connectionWrapper.getConnection());
+            accountRepository = new AccountRepositoryMySQL(connectionWrapper.getConnection(), clientRepository);
+            AuthenticationService authenticationService = new AuthenticationServiceMySQL(userRepository, rightsRolesRepository);
+
+            Notification<Boolean> notification = authenticationService.register("admin@UT.com", "LongPassword!1", Constants.Roles.ADMINISTRATOR);
+            if (notification.hasErrors()) {
+                System.out.println(notification.getFormattedErrors());
+            } else {
+                System.out.println("Administrator registered");
+            }
+            ClientManagementService clientManagementService = new ClientManagementServiceMySQL(clientRepository);
+            notification = clientManagementService.registerClient("Ionescu", "Cluj", "12345", "CJ123");
+            if (notification.hasErrors()) {
+                System.out.println(notification.getFormattedErrors());
+            } else {
+                System.out.println("Client Ionescu registered");
+            }
+
+            notification = clientManagementService.registerClient("Popescu", "Alba", "23456", "AB234");
+            if (notification.hasErrors()) {
+                System.out.println(notification.getFormattedErrors());
+            } else {
+                System.out.println("Client Popescu registered");
+            }
+
+            AccountManagementService accountManagementService = new AccountManagementServiceMySQL(accountRepository, clientRepository);
+
+
+            notification = accountManagementService.createAccount("Ionescu", Constants.AccountTypes.CREDIT, 1000, new Date(System.currentTimeMillis()));
+            if (notification.hasErrors()) {
+                System.out.println(notification.getFormattedErrors());
+            } else {
+                System.out.println("Account for Ionescu created");
+            }
+            notification = accountManagementService.createAccount("Popescu", Constants.AccountTypes.DEBIT, 10000, new Date(System.currentTimeMillis()));
+            if (notification.hasErrors()) {
+                System.out.println(notification.getFormattedErrors());
+            } else {
+                System.out.println("Account for Popescu created");
+            }
+        }
     }
 
 }
