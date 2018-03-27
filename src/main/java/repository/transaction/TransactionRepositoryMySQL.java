@@ -60,12 +60,13 @@ public class TransactionRepositoryMySQL implements TransactionRepository {
     }
 
     @Override
-    public List<Transaction> findTransactionByUser(User user) {
+    public List<Transaction> findTransactionByUserName(String user) {
         List<Transaction> transactions = new ArrayList<Transaction>();
+        Long userID = userRepository.findByUsername(user).getId();
         try{
             PreparedStatement findTransaction = connection.prepareStatement(
                     "SELECT * from `TRANSACTION` WHERE user_id = ? ");
-            findTransaction.setLong(1,user.getId());
+            findTransaction.setLong(1,userID);
             ResultSet rs = findTransaction.executeQuery();
             while (rs.next()){
                 transactions.add(getTransactionFromResultSet(rs));

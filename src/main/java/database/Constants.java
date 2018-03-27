@@ -77,6 +77,9 @@ public class Constants {
         public static final String ACCOUNT_CREATION = "account creation";
         public static final String ACCOUNT_UPDATE = "account update";
         public static final String ACCOUNT_REMOVAL = "account removal";
+        public static final String USER_CREATION = "user creation";
+        public static final String USER_UPDATE = "user update";
+        public static final String USER_REMOVAL = "user removal";
     }
 
     public static Map<String, List<String>> getRolesRights() {

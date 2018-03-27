@@ -1,12 +1,6 @@
 package views;
 
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
+import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.List;
@@ -77,6 +71,7 @@ public class AdministratorPanel extends JPanel {
 	public void setRolesTextArea(String roles) {
 		rolesTextArea.setText(roles);
 	}
+	public String getRolesText(){return  rolesTextArea.getText();}
 	public void setBtnRemoveUser(ActionListener action) {
 		btnRemoveUser.addActionListener(action);
 	}
@@ -113,10 +108,12 @@ public class AdministratorPanel extends JPanel {
 	}
 	
 	public void setRoleComboBox(List<String> roles){
+		roleComboBox.setModel(new DefaultComboBoxModel<String>());
 		roles.forEach(roleComboBox::addItem);
 	}
 	
 	public void setUserComboBox(List<String> users){
+		userComboBox.setModel(new DefaultComboBoxModel<String>());
 		users.forEach(userComboBox::addItem);
 	}
 	

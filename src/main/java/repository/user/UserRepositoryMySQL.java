@@ -31,13 +31,14 @@ public class UserRepositoryMySQL implements UserRepository {
         List<User> users = new ArrayList<User>();
         try {
             PreparedStatement selectUserStatement = connection.
-                    prepareStatement("SELECT * FROM user ");
+                    prepareStatement("SELECT * FROM `user` ");
             ResultSet userResultSet = selectUserStatement.executeQuery();
             while (userResultSet.next()) {
                 User user = new UserBuilder()
-                        .setPassword(userResultSet.getString("username"))
+                        .setUsername(userResultSet.getString("username"))
                         .setPassword(userResultSet.getString("password"))
                         .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("user_id")))
+                        .setId(userResultSet.getLong("user_id"))
                         .build();
                 users.add(user);
             }
@@ -60,6 +61,7 @@ public class UserRepositoryMySQL implements UserRepository {
                         .setUsername(userResultSet.getString("username"))
                         .setPassword(userResultSet.getString("password"))
                         .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("user_id")))
+                        .setId(userResultSet.getLong("user_id"))
                         .build();
                 findByUsernameAndPasswordNotification.setResult(user);
                 return findByUsernameAndPasswordNotification;
@@ -82,9 +84,10 @@ public class UserRepositoryMySQL implements UserRepository {
             ResultSet userResultSet = selectUserStatement.executeQuery();
             if (userResultSet.next()){
                 User user = new UserBuilder()
-                        .setPassword(userResultSet.getString("username"))
+                        .setUsername(userResultSet.getString("username"))
                         .setPassword(userResultSet.getString("password"))
                         .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("user_id")))
+                        .setId(userResultSet.getLong("user_id"))
                         .build();
                 return user;
             }
@@ -107,8 +110,9 @@ public class UserRepositoryMySQL implements UserRepository {
             ResultSet userResultSet = selectUserStatement.executeQuery();
             if (userResultSet.next()) {
                 User user = new UserBuilder()
-                        .setPassword(userResultSet.getString("username"))
+                        .setUsername(userResultSet.getString("username"))
                         .setPassword(userResultSet.getString("password"))
+                        .setId(userResultSet.getLong("user_id"))
                         .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("user_id")))
                         .build();
                 return user;
@@ -127,6 +131,7 @@ public class UserRepositoryMySQL implements UserRepository {
     public boolean updateUser(User user) {
         try{
             List<Role> roles = rightsRolesRepository.findRolesForUser(user.getId());
+            rightsRolesRepository.deleteRolesforUser(user.getId());
 
             PreparedStatement updateUser = connection.prepareStatement(
                     "UPDATE user SET  username = ?, password = ? WHERE user_id = ?");
@@ -135,10 +140,8 @@ public class UserRepositoryMySQL implements UserRepository {
             updateUser.setLong(3,user.getId());
             updateUser.executeUpdate();
 
-            List<Role> newRoles = new ArrayList<Role>(user.getRoles());
-            newRoles.removeAll(roles);
 
-            rightsRolesRepository.addRolesToUser(user, newRoles);
+            rightsRolesRepository.addRolesToUser(user, user.getRoles());
 
             return true;
         }

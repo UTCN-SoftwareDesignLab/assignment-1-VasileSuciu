@@ -11,7 +11,7 @@ public interface TransactionRepository {
 
     List<Transaction> getAllTransaction();
 
-    List<Transaction> findTransactionByUser(User user);
+    List<Transaction> findTransactionByUserName(String user);
 
     Transaction findTransactionById(Long id);
 

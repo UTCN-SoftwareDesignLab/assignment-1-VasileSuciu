@@ -9,6 +9,7 @@ import repository.user.UserRepository;
 
 import java.security.MessageDigest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserManagementServiceMySQL implements UserManagementService {
     private UserRepository userRepository;
@@ -20,9 +21,21 @@ public class UserManagementServiceMySQL implements UserManagementService {
     }
 
     @Override
-    public Notification<Boolean> updateUser(User user, Boolean passwordChanged) {
+    public Notification<Boolean> updateUser(String username, String password, List<String> roles) {
+        User user = userRepository.findByUsername(username);
+        user.setRoles(roles.stream().map(rightsRolesRepository::findRoleByTitle).collect(Collectors.toList()));
+        boolean passwordChanged = !user.getPassword().equals(password);
+        if (passwordChanged){
+            user.setPassword(password);
+        }
         UserValidator userValidator = new UserValidator(user);
-        boolean userValid = userValidator.validate();
+        boolean userValid;
+        if (passwordChanged){
+            userValid = userValidator.validate();
+        }
+        else {
+            userValid = userValidator.validateExceptPassword();
+        }
         Notification<Boolean> userNotification = new Notification<>();
 
         if (!userValid){
@@ -30,10 +43,9 @@ public class UserManagementServiceMySQL implements UserManagementService {
             userNotification.setResult(Boolean.FALSE);
             return userNotification;
         }
-        if (passwordChanged){
-            user.setPassword(encodePassword(user.getPassword()));
+        else {
+            userNotification.setResult(userRepository.updateUser(user));
         }
-        userNotification.setResult(userRepository.updateUser(user));
         return userNotification;
     }
 

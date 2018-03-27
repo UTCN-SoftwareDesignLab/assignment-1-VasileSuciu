@@ -5,6 +5,7 @@ import model.Account;
 import model.Client;
 import model.User;
 import model.validation.Notification;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import repository.user.AuthenticationException;
 import service.bank.AccountManagementService;
 import service.bank.AccountTransferService;
@@ -25,6 +26,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Controller {
@@ -178,6 +180,7 @@ public class Controller {
                 if (notification.hasErrors()) {
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), notification.getFormattedErrors());
                 } else {
+                    transactionService.recordTransaction(user,Constants.TransactionType.ACCOUNTS_TRANSFER, new Date(System.currentTimeMillis()));
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), "Transfer successful!");
                 }
             }
@@ -192,6 +195,7 @@ public class Controller {
                 if (notification.hasErrors()) {
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), notification.getFormattedErrors());
                 } else {
+                    transactionService.recordTransaction(user,Constants.TransactionType.PAYING_BILL, new Date(System.currentTimeMillis()));
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), "Bill paid successfully!");
                 }
             }
@@ -209,6 +213,7 @@ public class Controller {
                 if (notification.hasErrors()) {
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), notification.getFormattedErrors());
                 } else {
+                    transactionService.recordTransaction(user,Constants.TransactionType.CLIENT_CREATION, new Date(System.currentTimeMillis()));
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), "Client registered successfully!");
                 }
             }
@@ -226,6 +231,7 @@ public class Controller {
                 if (notification.hasErrors()) {
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), notification.getFormattedErrors());
                 } else {
+                    transactionService.recordTransaction(user,Constants.TransactionType.CLIENT_UPDATE, new Date(System.currentTimeMillis()));
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), "Client updated successfully!");
                 }
             }
@@ -240,6 +246,7 @@ public class Controller {
                 JOptionPane.showMessageDialog(mainFrame.getContentPane(), "Client not deleted");
             }
             else {
+                transactionService.recordTransaction(user,Constants.TransactionType.CLIENT_REMOVAL, new Date(System.currentTimeMillis()));
                 JOptionPane.showMessageDialog(mainFrame.getContentPane(), "Client deleted successfully!");
             }
 
@@ -257,6 +264,7 @@ public class Controller {
                 if (notification.hasErrors()) {
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), notification.getFormattedErrors());
                 } else {
+                    transactionService.recordTransaction(user,Constants.TransactionType.ACCOUNT_CREATION, new Date(System.currentTimeMillis()));
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), "Account created successfully!");
                 }
             }
@@ -273,6 +281,7 @@ public class Controller {
                 if (notification.hasErrors()) {
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), notification.getFormattedErrors());
                 } else {
+                    transactionService.recordTransaction(user,Constants.TransactionType.ACCOUNT_UPDATE, new Date(System.currentTimeMillis()));
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), "Account updated successfully!");
                 }
             }
@@ -287,6 +296,7 @@ public class Controller {
                 JOptionPane.showMessageDialog(mainFrame.getContentPane(), "Account not deleted");
             }
             else {
+                transactionService.recordTransaction(user,Constants.TransactionType.ACCOUNT_REMOVAL, new Date(System.currentTimeMillis()));
                 JOptionPane.showMessageDialog(mainFrame.getContentPane(), "Account deleted successfully!");
             }
 
@@ -346,29 +356,27 @@ public class Controller {
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), notification.getFormattedErrors());
                 }
                 else{
+                    transactionService.recordTransaction(user,Constants.TransactionType.USER_CREATION, new Date(System.currentTimeMillis()));
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(),"Registration successful!");
                 }
             }
         }
     }
 
-    //to be implemented
     private class UpdateUser implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            //not implemented yet
-            /*List<String> roles = new ArrayList<>();
-            User newUser = new UserBuilder().setPassword(administratorPanel.getPasswordField())
-                    .setRoles(roles);
-            Notification<Boolean> notification = userManagementService.updateUser(user, false);
+            List<String> roles = Arrays.stream(Constants.Roles.ROLES).filter(administratorPanel.getRolesText()::contains).collect(Collectors.toList());
+            Notification<Boolean> notification= userManagementService.updateUser(administratorPanel.getUserText(), administratorPanel.getPasswordField(), roles);
             if (notification != null){
                 if (notification.hasErrors()){
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(), notification.getFormattedErrors());
                 }
                 else{
+                    transactionService.recordTransaction(user,Constants.TransactionType.USER_UPDATE, new Date(System.currentTimeMillis()));
                     JOptionPane.showMessageDialog(mainFrame.getContentPane(),"Update successful!");
                 }
-            }*/
+            }
         }
     }
 
@@ -377,6 +385,7 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             boolean userDeleted = userManagementService.deleteUser(administratorPanel.getUserComboBoxSelectedItem());
             if (userDeleted){
+                transactionService.recordTransaction(user,Constants.TransactionType.USER_REMOVAL, new Date(System.currentTimeMillis()));
                 JOptionPane.showMessageDialog(mainFrame.getContentPane(), "User deleted");
             }
             else {
@@ -385,30 +394,33 @@ public class Controller {
         }
     }
 
-    //to be implemented
     private class GenerateReport implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            administratorPanel.setReportTextArea(transactionService.getReportForUser(administratorPanel.getUserComboBoxSelectedItem()).toString());
         }
     }
 
-    //to be implemented
     private  class AddRole implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            String role = administratorPanel.getRoleComboBoxSelectedItem();
+            if (!administratorPanel.getRolesText().contains(role)){
+                administratorPanel.setRolesTextArea(administratorPanel.getRolesText()+" "+role);
+            }
         }
     }
 
     private class RemoveRole implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            String role = administratorPanel.getRoleComboBoxSelectedItem();
+            if (administratorPanel.getRolesText().contains(role)){
+                administratorPanel.setRolesTextArea(administratorPanel.getRolesText().replaceAll(role,""));
+            }
         }
     }
 
-    //to be implemented
     private class UsersComboBoxItemListener implements ItemListener{
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -416,7 +428,7 @@ public class Controller {
             administratorPanel.setUserText(newUser.getUsername());
             administratorPanel.setPasswordText(newUser.getPassword());
             administratorPanel.setRolesTextArea(newUser.getRoles().stream()
-                .map(s->s.getRole()).reduce(" ", String::concat));
+                .map(s->s.getRole()+" ").reduce("", String::concat));
         }
     }
 }

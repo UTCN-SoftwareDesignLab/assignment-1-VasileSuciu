@@ -1,15 +1,10 @@
 package views;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
 
 public class EmployeePanel extends JPanel {
 	private JTextField companyTextField;
@@ -162,16 +157,19 @@ public class EmployeePanel extends JPanel {
 		btnCreateAccount.addActionListener(action);
 	}
 	public void setAccoutFromComboBox(List<Long> accounts){
+		accountFromComboBox.setModel(new DefaultComboBoxModel<Long>());
 		accounts.forEach(accountFromComboBox::addItem);
 	}
 	public void setAccoutToComboBox(List<Long> accounts){
+		accountToComboBox.setModel(new DefaultComboBoxModel<Long>());
 		accounts.forEach(accountToComboBox::addItem);
 	}
 	public void setClientFromComboBox(List<String> clients){
+		clientFromComboBox.setModel(new DefaultComboBoxModel<String>());
 		clients.forEach(clientFromComboBox::addItem);
 	}
 	public void setClientToComboBox(List<String> clients){
-
+		clientToComboBox.setModel(new DefaultComboBoxModel<String>());
 		clients.forEach(clientToComboBox::addItem);
 	}
 	public void setAccountTypeComboBox(List<String> types){

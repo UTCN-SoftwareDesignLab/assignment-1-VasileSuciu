@@ -26,9 +26,9 @@ public class TransactionServiceMySQL  implements TransactionService{
     }
 
     @Override
-    public String getReportForUser(User user) {
+    public String getReportForUser(String user) {
         StringBuilder report = new StringBuilder();
-        List<Transaction> transactions = transactionRepository.findTransactionByUser(user);
+        List<Transaction> transactions = transactionRepository.findTransactionByUserName(user);
         transactions.forEach(s -> report.append(s.toString()+"\n"));
         return report.toString();
     }

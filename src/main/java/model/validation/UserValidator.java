@@ -1,5 +1,6 @@
 package model.validation;
 
+import model.Role;
 import model.User;
 
 import java.util.ArrayList;
@@ -30,8 +31,16 @@ public class UserValidator {
     public boolean validate() {
         validateUsername(user.getUsername());
         validatePassword(user.getPassword());
+        validateRoles(user.getRoles());
         return errors.isEmpty();
     }
+
+    public boolean validateExceptPassword() {
+        validateUsername(user.getUsername());
+        validateRoles(user.getRoles());
+        return errors.isEmpty();
+    }
+
 
     private void validateUsername(String username) {
         if (!Pattern.compile(EMAIL_VALIDATION_REGEX).matcher(username).matches()) {
@@ -48,6 +57,12 @@ public class UserValidator {
         }
         if (!containsDigit(password)) {
             errors.add("Password must contain at least one number!");
+        }
+    }
+
+    private void validateRoles(List<Role> roles){
+        if (roles.isEmpty()){
+            errors.add("Each user should have at least one role!");
         }
     }
 
