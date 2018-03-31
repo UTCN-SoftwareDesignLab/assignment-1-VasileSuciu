@@ -60,7 +60,10 @@ public class ClientManagementServiceMySQL implements ClientManagementService{
     @Override
     public boolean deleteClient(String name) {
         Client client = clientRepository.getClientByName(name);
-        return clientRepository.removeClient(client);
+        if (client != null) {
+            return clientRepository.removeClient(client);
+        }
+        return false;
     }
 
     @Override

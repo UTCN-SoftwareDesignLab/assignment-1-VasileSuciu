@@ -70,9 +70,7 @@ public class Controller {
     private void setListeners(){
         logInPanel.setBtnLogInActionListener(new LoginButtonListener());
         employeePanel.setBtnLogOut(new LogOutButtonListener());
-        administratorPanel.setBtnLogOut(new LogOutButtonListener());
         employeePanel.setBtnSwitchView(new SwitchButtonListener());
-        administratorPanel.setBtnSwitchView(new SwitchButtonListener());
         employeePanel.setBtnTransfer(new TransferButtonListener());
         employeePanel.setBtnPayBill(new PayBillListener());
         employeePanel.setBtnAddClient(new AddClient());
@@ -84,6 +82,8 @@ public class Controller {
         employeePanel.setAccountFromItemListener(new AccountFromItemListener());
         employeePanel.setClientFromItemListener(new ClientFromItemListener());
         employeePanel.setClientToItemListener(new ClientToItemListener());
+        administratorPanel.setBtnSwitchView(new SwitchButtonListener());
+        administratorPanel.setBtnLogOut(new LogOutButtonListener());
         administratorPanel.setBtnRegisterUser(new RegisterUser());
         administratorPanel.setBtnUpdateUser(new UpdateUser());
         administratorPanel.setBtnRemoveUser(new RemoveUser());
